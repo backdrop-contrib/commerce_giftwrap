@@ -1,0 +1,4 @@
+name = Commerce Gift Wrap
+description = Provides a checkout pane and line item type to apply gift wrapping to an order.
+package = Commerce (contrib)
+core = 7.x

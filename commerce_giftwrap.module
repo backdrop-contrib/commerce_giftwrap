@@ -1,0 +1,69 @@
+<?php
+/**
+ * @file
+ * This module adds a new checkout pane with configuration settings to allow users to select a gift wrapping option to 
+ * add to their order. Store owners can set a price for gift wrapping and add some additional information about the service.
+ */
+ 
+ /**
+ * Implements hook_help().
+ */
+function commerce_giftwrap_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#commerce_giftwrap':
+      return t('This module provides a checkout pane for users to select if they would like their order gift wrapping.
+      Options for changing the gift wrapping price and adding some more information on the gift wrapping service can be 
+      found in the checkout settings page.');
+  }
+}
+
+/**
+ * Implements hook_commerce_checkout_pane_info()
+ */
+function commerce_giftwrap_commerce_checkout_pane_info() {
+  $panes['commerce_giftwrap'] = array(
+    'title' => t('Gift Wrapping'),
+    'page' => 'checkout',
+    'weight' => 10,
+    'file' => 'commerce_giftwrap_checkout_pane.inc',
+    'base' => 'commerce_giftwrap_pane'
+  );
+  return $panes;
+}
+
+
+/**
+* Implements hook_enable() to provide a new line item type.
+*/
+function commerce_giftwrap_enable() {
+  commerce_product_line_item_configuration('giftwrap');
+}
+/**
+ * Implements hook_commerce_line_item_type_info().
+ */
+function commerce_giftwrap_commerce_line_item_type_info() {
+  return array(
+    'giftwrap' => array(
+      'type' => 'giftwrap',
+      'name' => t('Gift Wrap'),
+      'description' => t('Line item for gift wrapping.'),
+      'add_form_submit_value' => t('Add Gift Wrapping'),
+      'base' => 'ommerce_giftwrap_line_item',
+      //'callbacks' => array(
+      //  'configuration' => 'commerce_giftwrap_configure_line_item',
+      //),
+    ),
+  );
+}
+
+/**
+ * Implements hook_commerce_price_component_type_info().
+ */
+function commerce_giftwrap_commerce_price_component_type_info() {
+  return array(
+    'giftwrap' => array(
+      'title' => t('Gift Wrapping'),
+      'weight' => -40,
+    ),
+  );
+}

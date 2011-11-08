@@ -32,7 +32,12 @@ function commerce_giftwrap_pane_settings_form($checkout_pane) {
  */
 function commerce_giftwrap_pane_checkout_form($form, $form_state, $checkout_pane, $order) {
   
-  dpm($form_state);
+  //Set $default_value
+  if(commerce_giftwrap_giftwrap_line_item_exists($order)){
+    $default_value = 1;
+  } else {
+    $default_value = 0;
+  }
     
   $checkout_form['commerce_giftwrap_decision'] = array(
     '#type' => 'select',
@@ -41,7 +46,7 @@ function commerce_giftwrap_pane_checkout_form($form, $form_state, $checkout_pane
       0 => t('No'),
       1 => t('Yes'),
     ),
-    '#default_value' => 0,
+    '#default_value' => $default_value,
   );
     
   $checkout_form['commerce_giftwrap_additional_info'] = array(
@@ -59,24 +64,13 @@ function commerce_giftwrap_pane_checkout_form($form, $form_state, $checkout_pane
  */
 function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $checkout_pane, $order) {
   
-  //make sure gift wrap is only added once
-  //set default
-  $giftwrap_line_item_exists = FALSE;
-  
-  foreach($order->commerce_line_items['und'] as $item) {
-    $line_item_id = $item['line_item_id'];
-    $line_item = commerce_line_item_load($line_item_id);
-    if($line_item->type == 'giftwrap'){
-      $giftwrap_line_item_exists = TRUE;
-      $giftwrap_line_item_id = $line_item_id;
-    }
-  }
+  $giftwrap_line_item_exists = commerce_giftwrap_giftwrap_line_item_exists($order);
   
   $giftwrap_decision = $form_state['values']['commerce_giftwrap']['commerce_giftwrap_decision'];
   
   if(!$giftwrap_line_item_exists && $giftwrap_decision){
     
-    //set the currency code
+    // Set the currency code
     $default_currency_code = commerce_default_currency();
     if ($balance = commerce_payment_order_balance($order)) {
       $default_currency_code = $balance['currency_code'];
@@ -85,13 +79,11 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
     // Create the new line item.
     $line_item = commerce_line_item_new('giftwrap', $order->order_id);
 
-    // Wrap the order to simplify manipulating its field data.
+    // Wrap the line item and order to simplify manipulating their field data.
     $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
-
-    // Wrap the line item to simplify manipulating its field data.
     $line_item_wrapper = entity_metadata_wrapper('commerce_line_item', $line_item);
 
-    // Other code to populate the $line_item_wrapper...
+    // Populate the $line_item_wrapper...
     $line_item_wrapper->line_item_label = 'Gift Wrapping';
     //$line_item_wrapper->title = 'Gift Wrapping';
     $line_item_wrapper->quantity = 1;
@@ -109,32 +101,14 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
 
     // Save the incoming line item now so we get its ID.
     commerce_line_item_save($line_item); 
-
     // Add it to the order's line item reference value.
     $order_wrapper->commerce_line_items[] = $line_item;
-
+    // Save the order
     commerce_order_save($order);
     
   } elseif (!$giftwrap_decision) {
-    // Remove the line item from the line item reference field.
-    $order = commerce_entity_reference_delete('commerce_order', $order, 'commerce_line_items', $giftwrap_line_item_id);
-    // Delete the actual line item.
-    commerce_line_item_delete($giftwrap_line_item_id);
-    //save the order
-    commerce_order_save($order);
+    // If the user selects 'No' check if giftwrapping has been added, if so delete it.
+    commerce_giftwrap_delete_shipping_line_items($order);
   }
   
-}
-
-/**
- * Implements base_checkout_form_review()
- */
-function commerce_giftwrap_pane_review($form, &$form_state, $checkout_pane, $order) {
-  $giftwrap_decision = $form_state['values']['commerce_giftwrap']['commerce_giftwrap_decision'];
-  
-  if($giftwrap_decision) {
-    print 'Gift Wrap? Yes';
-  } else {
-    print 'Gift Wrap? No';
-  }
 }

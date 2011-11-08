@@ -18,6 +18,13 @@ function commerce_giftwrap_help($path, $arg) {
 }
 
 /**
+* Implements hook_enable() to provide a new line item type.
+*/
+function commerce_giftwrap_enable() {
+  commerce_product_line_item_configuration('giftwrap');
+}
+
+/**
  * Implements hook_commerce_checkout_pane_info()
  */
 function commerce_giftwrap_commerce_checkout_pane_info() {
@@ -29,14 +36,6 @@ function commerce_giftwrap_commerce_checkout_pane_info() {
     'base' => 'commerce_giftwrap_pane'
   );
   return $panes;
-}
-
-
-/**
-* Implements hook_enable() to provide a new line item type.
-*/
-function commerce_giftwrap_enable() {
-  commerce_product_line_item_configuration('giftwrap');
 }
 /**
  * Implements hook_commerce_line_item_type_info().
@@ -55,7 +54,6 @@ function commerce_giftwrap_commerce_line_item_type_info() {
     ),
   );
 }
-
 /**
  * Implements hook_commerce_price_component_type_info().
  */
@@ -66,4 +64,49 @@ function commerce_giftwrap_commerce_price_component_type_info() {
       'weight' => -40,
     ),
   );
+}
+
+/**
+ * Deletes all giftwrap line items on an order.
+ *
+ * @param $order
+ *  The order object to delete the giftwrap line items from.
+ */
+function commerce_giftwrap_delete_shipping_line_items($order) {
+  $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
+
+  foreach ($order_wrapper->commerce_line_items as $delta => $line_item_wrapper) {
+    // If this line item is a giftwrap line item...
+    if ($line_item_wrapper->type->value() == 'giftwrap') {
+      // Store its ID for later deletion and remove the reference from the line
+      // item reference field.
+      $line_item_id = $line_item_wrapper->line_item_id->value();
+      $order_wrapper->commerce_line_items->offsetUnset($delta);
+    }
+  }
+
+  // If we found any shipping line items...
+  if (!empty($line_item_id)) {
+    // First save the order to update the line item reference field value.
+    commerce_order_save($order);
+    // Then delete the line items.
+    commerce_line_item_delete($line_item_id);
+  }
+}
+
+/**
+ * Checks if an order contains a giftwrap line item.
+ *
+ * @param $order
+ *  The order object to check for a giftwrap line item.
+ */
+function commerce_giftwrap_giftwrap_line_item_exists($order) {
+  $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
+  
+  foreach ($order_wrapper->commerce_line_items as $line_item_wrapper) {
+    // If this line item is a giftwrap line item...
+    if ($line_item_wrapper->type->value() == 'giftwrap') {
+      return TRUE;
+    }
+  }
 }

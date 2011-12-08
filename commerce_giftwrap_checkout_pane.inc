@@ -24,6 +24,17 @@ function commerce_giftwrap_pane_settings_form($checkout_pane) {
                           displayed below the Yes/No form field.'),
     '#default_value' => variable_get('commerce_giftwrap_additional_info', ''),
   );
+  
+  $form['commerce_giftwrap_show_message'] = array(
+    '#type' => 'radios',
+    '#title' => t('Allow the user to add a message?'),
+    '#options' => array(
+      1 => t('Yes'),
+      0 => t('No'),
+    ),
+    '#default_value' => variable_get('commerce_giftwrap_show_message', '1'),
+  );
+  
   return $form;
 }
 
@@ -48,13 +59,29 @@ function commerce_giftwrap_pane_checkout_form($form, $form_state, $checkout_pane
     ),
     '#default_value' => $default_value,
   );
-    
-  $checkout_form['commerce_giftwrap_additional_info'] = array(
+  
+  if (variable_get('commerce_giftwrap_additional_info', '') != '') {
+    $checkout_form['commerce_giftwrap_additional_info'] = array(
     '#markup' => '<div class="giftwrap-additonal-info">
                     <a href="#">What\'s included?</a>
                     <p>' . variable_get('commerce_giftwrap_additional_info', '') . '</p>
                   </div>',
-  );
+    );
+  }
+  
+  
+  if (variable_get('commerce_giftwrap_show_message', '1')) {
+    $checkout_form['commerce_giftwrap_message'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Message'),
+      '#description' => t('Add a personal message to be included with your gift.'),
+      '#states' => array(
+        'visible' => array(   // action to take.
+          ':input[name="commerce_giftwrap[commerce_giftwrap_decision]"]' => array('value' => '1'),
+        ),
+      ),
+    );
+  }
     
   return $checkout_form;
 }

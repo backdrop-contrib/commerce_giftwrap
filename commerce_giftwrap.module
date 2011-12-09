@@ -67,6 +67,27 @@ function commerce_giftwrap_commerce_price_component_type_info() {
 }
 
 /**
+ * Implements hook_menu().
+ */
+function commerce_giftwrap_menu() {
+  $items = array();
+
+  // Giftwrap tab on orders.
+  $items['admin/commerce/orders/%commerce_order/giftwrap'] = array(
+    'title' => 'Gift Wrapping',
+    'page callback' => 'commerce_giftwrap_order_tab',
+    'page arguments' => array(3),
+    'access callback' => 'commerce_order_access',
+    'access arguments' => array('view', 3),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 10,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+    'file' => 'commerce_giftwrap_order.inc',
+  );
+  return $items;
+}
+
+/**
  * Deletes all giftwrap line items on an order.
  *
  * @param $order

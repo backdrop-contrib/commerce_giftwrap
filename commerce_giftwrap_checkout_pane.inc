@@ -137,7 +137,7 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
     
   } elseif (!$giftwrap_decision) {
     // If the user selects 'No' check if giftwrapping has been added, if so delete it.
-    commerce_giftwrap_delete_shipping_line_items($order);
+    commerce_giftwrap_delete_giftwrap_line_items($order);
   }
   
 }

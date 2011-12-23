@@ -93,7 +93,7 @@ function commerce_giftwrap_menu() {
  * @param $order
  *  The order object to delete the giftwrap line items from.
  */
-function commerce_giftwrap_delete_shipping_line_items($order) {
+function commerce_giftwrap_delete_giftwrap_line_items($order) {
   $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
 
   foreach ($order_wrapper->commerce_line_items as $delta => $line_item_wrapper) {
@@ -106,7 +106,7 @@ function commerce_giftwrap_delete_shipping_line_items($order) {
     }
   }
 
-  // If we found any shipping line items...
+  // If we found any giftwrap line items...
   if (!empty($line_item_id)) {
     // First save the order to update the line item reference field value.
     commerce_order_save($order);

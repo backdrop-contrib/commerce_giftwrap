@@ -48,12 +48,40 @@ function commerce_giftwrap_commerce_line_item_type_info() {
       'description' => t('Line item for gift wrapping.'),
       'add_form_submit_value' => t('Add Gift Wrapping'),
       'base' => 'ommerce_giftwrap_line_item',
-      //'callbacks' => array(
-      //  'configuration' => 'commerce_giftwrap_configure_line_item',
-      //),
+      'callbacks' => array(
+        'configuration' => 'commerce_giftwrap_configure_line_item',
+      ),
     ),
   );
 }
+/**
+ * This function is called by the line item module when it is enabled or this
+ * module is enabled. It invokes this function using the configuration_callback
+ * as specified above.
+ */
+function commerce_giftwrap_configure_line_item() {
+  //Create the message field
+  $field = array(
+    'field_name' => 'commerce_giftwrap_message',
+    'type' => 'text',
+  );
+  field_create_field($field);
+  
+  //Add the field to the Giftwrap Line Item
+  $instance = array(
+    'field_name' => 'commerce_giftwrap_message',
+    'entity_type' => 'commerce_line_item',
+    'bundle' => 'giftwrap',
+    'label' => t('Giftwrap Message'),
+    'description' => t('The Giftwrap Message'),
+    'widget' => array(
+      'type' => 'text_textfield',
+      'weight' => 10,
+    ),
+  );
+  field_create_instance($instance);
+}
+
 /**
  * Implements hook_commerce_price_component_type_info().
  */

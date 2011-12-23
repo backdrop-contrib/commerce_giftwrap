@@ -112,7 +112,7 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
 
     // Populate the $line_item_wrapper...
     $line_item_wrapper->line_item_label = 'Gift Wrapping';
-    //$line_item_wrapper->title = 'Gift Wrapping';
+    $line_item_wrapper->commerce_giftwrap_message = $form_state['values']['commerce_giftwrap']['commerce_giftwrap_message'];
     $line_item_wrapper->quantity = 1;
     $line_item_wrapper->commerce_unit_price->amount = variable_get('commerce_giftwrap_price', '200');
     $line_item_wrapper->commerce_unit_price->currency_code = $default_currency_code;
@@ -130,8 +130,6 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
     commerce_line_item_save($line_item); 
     // Add it to the order's line item reference value.
     $order_wrapper->commerce_line_items[] = $line_item;
-    //Add the giftwrap message to the order. 
-    $order->data['commerce_giftwrap_message'] = $form_state['values']['commerce_giftwrap']['commerce_giftwrap_message'];
     // Save the order
     commerce_order_save($order);
     

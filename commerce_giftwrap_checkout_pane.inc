@@ -44,7 +44,7 @@ function commerce_giftwrap_pane_settings_form($checkout_pane) {
 function commerce_giftwrap_pane_checkout_form($form, $form_state, $checkout_pane, $order) {
   
   //Set $default_value
-  if(commerce_giftwrap_giftwrap_line_item_exists($order)){
+  if(commerce_giftwrap_line_item_exists($order)){
     $default_value = 1;
   } else {
     $default_value = 0;
@@ -91,7 +91,7 @@ function commerce_giftwrap_pane_checkout_form($form, $form_state, $checkout_pane
  */
 function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $checkout_pane, $order) {
   
-  $giftwrap_line_item_exists = commerce_giftwrap_giftwrap_line_item_exists($order);
+  $giftwrap_line_item_exists = commerce_giftwrap_line_item_exists($order);
   
   $giftwrap_decision = $form_state['values']['commerce_giftwrap']['commerce_giftwrap_decision'];
   
@@ -138,4 +138,42 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
     commerce_giftwrap_delete_giftwrap_line_items($order);
   }
   
+}
+
+/**
+ * Implements the callback for the checkout pane review form
+ */
+function commerce_giftwrap_pane_review($form, $form_state, $checkout_pane, $order) {  
+  $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
+
+  foreach ($order_wrapper->commerce_line_items as $line_item) {
+    // If this line item is a giftwrap line item...
+    if ($line_item->type->value() == 'giftwrap') {
+      $message = $line_item->commerce_giftwrap_message->value();
+    }
+  }
+  
+  if(commerce_giftwrap_line_item_exists($order)) {
+    $output = array (
+      'giftwrap_decision' => array(
+        '#type' => 'markup',
+        '#markup' => '<h3>Would you like your order gift wrapped? <strong>Yes</strong></h3>',
+      ),
+      'title' => array(
+        '#type' => 'markup',
+        '#markup' => '<h3>Message:</h3>',
+      ),
+      'giftwrap_message' => array(
+        '#type' => 'markup',
+        '#markup' => '<p>' . $message . '</p>',
+      ),
+    );
+  }
+  else {
+    $output['giftwrap_decision'] = array(
+      '#type' => 'markup',
+      '#markup' => '<h3>Would you like your order gift wrapped? <strong>No</strong></h3>',
+    );
+  }
+  return drupal_render($output);
 }

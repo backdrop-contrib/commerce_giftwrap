@@ -35,6 +35,13 @@ function commerce_giftwrap_pane_settings_form($checkout_pane) {
     '#default_value' => variable_get('commerce_giftwrap_show_message', '1'),
   );
   
+  $form['commerce_giftwrap_limit_message'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Limit the length of the user\'s message'),
+    '#size' => 5,
+    '#default_value' => variable_get('commerce_giftwrap_limit_message', '60'),
+  );
+  
   return $form;
 }
 
@@ -63,7 +70,6 @@ function commerce_giftwrap_pane_checkout_form($form, $form_state, $checkout_pane
   if (variable_get('commerce_giftwrap_additional_info', '') != '') {
     $checkout_form['commerce_giftwrap_additional_info'] = array(
     '#markup' => '<div class="giftwrap-additonal-info">
-                    <a href="#">What\'s included?</a>
                     <p>' . variable_get('commerce_giftwrap_additional_info', '') . '</p>
                   </div>',
     );
@@ -74,7 +80,9 @@ function commerce_giftwrap_pane_checkout_form($form, $form_state, $checkout_pane
     $checkout_form['commerce_giftwrap_message'] = array(
       '#type' => 'textarea',
       '#title' => t('Message'),
-      '#description' => t('Add a personal message to be included with your gift.'),
+      '#description' => t('Add a personal message to be included with your gift. Your message must be no longer than @char characters.',
+                            array('@char' => variable_get('commerce_giftwrap_limit_message', '60'))),
+      '#maxlength' => variable_get('commerce_giftwrap_limit_message', '60'),
       '#states' => array(
         'visible' => array(   // action to take.
           ':input[name="commerce_giftwrap[commerce_giftwrap_decision]"]' => array('value' => '1'),

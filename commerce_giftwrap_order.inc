@@ -1,15 +1,14 @@
 <?php
 /**
  * @file
- * Contains all code for the gift wrap local tasks on the order page. Called from commerce_payment_ui_menu().
+ * Contains all code for the gift wrap local tasks on the order page.
+ * Called from commerce_payment_ui_menu().
  */
 
 /**
  * Builds the content for the gift wrap local task on the order page.
- * 
  * @param $order
  *  The order to show gift wrapping information on.
- * 
  * @return An Drupal render array of content for the gidt wrap local task.
  */
 function commerce_giftwrap_order_tab($order) {
@@ -21,8 +20,7 @@ function commerce_giftwrap_order_tab($order) {
       $message = $line_item->commerce_giftwrap_message->value();
     }
   }
-  
-  $output =  array(
+  $output = array(
     'title' => array(
       '#type' => 'markup',
       '#markup' => '<h3>Giftwrap Message</h3>',

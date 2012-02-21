@@ -38,7 +38,7 @@ function commerce_giftwrap_pane_settings_form($checkout_pane) {
   
   $form['commerce_giftwrap_limit_message'] = array(
     '#type' => 'textfield',
-    '#title' => t('Limit the length of the user\'s message'),
+    '#title' => t("Limit the length of the user's message"),
     '#size' => 5,
     '#default_value' => variable_get('commerce_giftwrap_limit_message', '60'),
   );
@@ -51,7 +51,7 @@ function commerce_giftwrap_pane_settings_form($checkout_pane) {
  */
 function commerce_giftwrap_pane_checkout_form($form, $form_state, $checkout_pane, $order) {
   
-  //Set $default_value
+  // Set $default_value
   if (commerce_giftwrap_line_item_exists($order)) {
     $default_value = 1;
   } 
@@ -86,7 +86,7 @@ function commerce_giftwrap_pane_checkout_form($form, $form_state, $checkout_pane
                             array('@char' => variable_get('commerce_giftwrap_limit_message', '60'))),
       '#maxlength' => variable_get('commerce_giftwrap_limit_message', '60'),
       '#states' => array(
-        'visible' => array(   // action to take.
+        'visible' => array(
           ':input[name="commerce_giftwrap[commerce_giftwrap_decision]"]' => array('value' => '1'),
         ),
       ),
@@ -107,7 +107,7 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
   
   if (!$giftwrap_line_item_exists && $giftwrap_decision) {
     
-    // Set the currency code
+    // Set the currency code.
     $default_currency_code = commerce_default_currency();
     if ($balance = commerce_payment_order_balance($order)) {
       $default_currency_code = $balance['currency_code'];
@@ -140,7 +140,7 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
     commerce_line_item_save($line_item); 
     // Add it to the order's line item reference value.
     $order_wrapper->commerce_line_items[] = $line_item;
-    // Save the order
+    // Save the order.
     commerce_order_save($order);
     
   } 

@@ -7,9 +7,12 @@
 
 /**
  * Builds the content for the gift wrap local task on the order page.
+ * 
  * @param $order
- *  The order to show gift wrapping information on.
- * @return An Drupal render array of content for the gidt wrap local task.
+ *   The order to show gift wrapping information on.
+ * 
+ * @return 
+ *   An Drupal render array of content for the gidt wrap local task.
  */
 function commerce_giftwrap_order_tab($order) {
   $order_wrapper = entity_metadata_wrapper('commerce_order', $order);

@@ -1,7 +1,8 @@
 <?php
 /**
  * @file
- * Contains all code for the gift wrap pane. Called from commerce_giftwrap_commerce_checkout_pane_info()
+ * Contains all code for the gift wrap pane. Called from
+ *  commerce_giftwrap_commerce_checkout_pane_info()
  */
 
 /**
@@ -151,7 +152,7 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
 }
 
 /**
- * Implements the callback for the checkout pane review form
+ * Implements base_review()
  */
 function commerce_giftwrap_pane_review($form, $form_state, $checkout_pane, $order) {  
   $order_wrapper = entity_metadata_wrapper('commerce_order', $order);

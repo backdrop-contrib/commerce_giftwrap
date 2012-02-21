@@ -12,47 +12,36 @@ function commerce_giftwrap_help($path, $arg) {
   switch ($path) {
     case 'admin/help#commerce_giftwrap':
       return t('This module provides a checkout pane for users to select if they would like their order gift wrapping.
-      Options for changing the gift wrapping price and adding some more information on the gift wrapping service can be 
-      found in the checkout settings page.');
+        Settings for the gift wrapping can be found in the checkout settings page at Store > Configuration > Checkout Settings.');
   }
 }
 
 /**
-* Implements hook_enable() to provide a new line item type.
-*/
-function commerce_giftwrap_enable() {
-  commerce_product_line_item_configuration('giftwrap');
+ * Implements hook_menu().
+ */
+function commerce_giftwrap_menu() {
+  $items = array();
+
+  // Giftwrap tab on orders.
+  $items['admin/commerce/orders/%commerce_order/giftwrap'] = array(
+    'title' => 'Gift Wrapping',
+    'page callback' => 'commerce_giftwrap_order_tab',
+    'page arguments' => array(3),
+    'access callback' => 'commerce_order_access',
+    'access arguments' => array('view', 3),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 10,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+    'file' => 'commerce_giftwrap_order.inc',
+  );
+  return $items;
 }
 
 /**
- * Implements hook_commerce_checkout_pane_info()
- */
-function commerce_giftwrap_commerce_checkout_pane_info() {
-  $panes['commerce_giftwrap'] = array(
-    'title' => t('Gift Wrapping'),
-    'page' => 'checkout',
-    'weight' => 10,
-    'file' => 'commerce_giftwrap_checkout_pane.inc',
-    'base' => 'commerce_giftwrap_pane'
-  );
-  return $panes;
-}
-/**
- * Implements hook_commerce_line_item_type_info().
- */
-function commerce_giftwrap_commerce_line_item_type_info() {
-  return array(
-    'giftwrap' => array(
-      'type' => 'giftwrap',
-      'name' => t('Gift Wrap'),
-      'description' => t('Line item for gift wrapping.'),
-      'add_form_submit_value' => t('Add Gift Wrapping'),
-      'base' => 'ommerce_giftwrap_line_item',
-      'callbacks' => array(
-        'configuration' => 'commerce_giftwrap_configure_line_item',
-      ),
-    ),
-  );
+* Implements hook_enable().
+*/
+function commerce_giftwrap_enable() {
+  commerce_product_line_item_configuration('giftwrap');
 }
 /**
  * This function is called by the line item module when it is enabled or this
@@ -83,6 +72,20 @@ function commerce_giftwrap_configure_line_item() {
 }
 
 /**
+ * Implements hook_commerce_checkout_pane_info().
+ */
+function commerce_giftwrap_commerce_checkout_pane_info() {
+  $panes['commerce_giftwrap'] = array(
+    'title' => t('Gift Wrapping'),
+    'page' => 'checkout',
+    'weight' => 10,
+    'file' => 'commerce_giftwrap_checkout_pane.inc',
+    'base' => 'commerce_giftwrap_pane'
+  );
+  return $panes;
+}
+
+/**
  * Implements hook_commerce_price_component_type_info().
  */
 function commerce_giftwrap_commerce_price_component_type_info() {
@@ -92,27 +95,6 @@ function commerce_giftwrap_commerce_price_component_type_info() {
       'weight' => -40,
     ),
   );
-}
-
-/**
- * Implements hook_menu().
- */
-function commerce_giftwrap_menu() {
-  $items = array();
-
-  // Giftwrap tab on orders.
-  $items['admin/commerce/orders/%commerce_order/giftwrap'] = array(
-    'title' => 'Gift Wrapping',
-    'page callback' => 'commerce_giftwrap_order_tab',
-    'page arguments' => array(3),
-    'access callback' => 'commerce_order_access',
-    'access arguments' => array('view', 3),
-    'type' => MENU_LOCAL_TASK,
-    'weight' => 10,
-    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
-    'file' => 'commerce_giftwrap_order.inc',
-  );
-  return $items;
 }
 
 /**
@@ -148,6 +130,8 @@ function commerce_giftwrap_delete_giftwrap_line_items($order) {
  *
  * @param $order
  *  The order object to check for a giftwrap line item.
+ * 
+ * @return TRUE if the order contains a giftwrap line item.
  */
 function commerce_giftwrap_line_item_exists($order) {
   $order_wrapper = entity_metadata_wrapper('commerce_order', $order);

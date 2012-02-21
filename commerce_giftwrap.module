@@ -104,7 +104,7 @@ function commerce_giftwrap_commerce_price_component_type_info() {
 /**
  * Deletes all giftwrap line items on an order.
  *
- * @param $order
+ * @param object $order
  *   The order object to delete the giftwrap line items from.
  */
 function commerce_giftwrap_delete_giftwrap_line_items($order) {
@@ -132,10 +132,10 @@ function commerce_giftwrap_delete_giftwrap_line_items($order) {
 /**
  * Checks if an order contains a giftwrap line item.
  *
- * @param $order
+ * @param object $order
  *   The order object to check for a giftwrap line item.
  * 
- * @return 
+ * @return bool
  *   TRUE if the order contains a giftwrap line item.
  */
 function commerce_giftwrap_line_item_exists($order) {

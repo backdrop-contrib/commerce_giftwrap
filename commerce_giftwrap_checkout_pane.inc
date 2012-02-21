@@ -51,9 +51,10 @@ function commerce_giftwrap_pane_settings_form($checkout_pane) {
 function commerce_giftwrap_pane_checkout_form($form, $form_state, $checkout_pane, $order) {
   
   //Set $default_value
-  if(commerce_giftwrap_line_item_exists($order)){
+  if (commerce_giftwrap_line_item_exists($order)) {
     $default_value = 1;
-  } else {
+  } 
+  else {
     $default_value = 0;
   }
     
@@ -103,7 +104,7 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
   
   $giftwrap_decision = $form_state['values']['commerce_giftwrap']['commerce_giftwrap_decision'];
   
-  if(!$giftwrap_line_item_exists && $giftwrap_decision){
+  if (!$giftwrap_line_item_exists && $giftwrap_decision) {
     
     // Set the currency code
     $default_currency_code = commerce_default_currency();
@@ -141,7 +142,8 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
     // Save the order
     commerce_order_save($order);
     
-  } elseif (!$giftwrap_decision) {
+  } 
+  elseif (!$giftwrap_decision) {
     // If the user selects 'No' check if giftwrapping has been added, if so delete it.
     commerce_giftwrap_delete_giftwrap_line_items($order);
   }
@@ -161,8 +163,8 @@ function commerce_giftwrap_pane_review($form, $form_state, $checkout_pane, $orde
     }
   }
   
-  if(commerce_giftwrap_line_item_exists($order)) {
-    $output = array (
+  if (commerce_giftwrap_line_item_exists($order)) {
+    $output = array(
       'giftwrap_decision' => array(
         '#type' => 'markup',
         '#markup' => '<h3>Would you like your order gift wrapped? <strong>Yes</strong></h3>',

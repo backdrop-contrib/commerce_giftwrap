@@ -3,6 +3,7 @@
  * @file
  * Contains all code for the gift wrap pane. Called from
  *  commerce_giftwrap_commerce_checkout_pane_info()
+ * 
  */
 /**
  * Implements base_settings_form()
@@ -62,8 +63,8 @@ function commerce_giftwrap_pane_checkout_form($form, $form_state, $checkout_pane
   if (variable_get('commerce_giftwrap_additional_info', '') != '') {
     $checkout_form['commerce_giftwrap_additional_info'] = array(
       '#markup' => '<div class="giftwrap-additonal-info"><p>'
-                    . variable_get('commerce_giftwrap_additional_info', '') .
-                    '</p></div>',
+      . variable_get('commerce_giftwrap_additional_info', '') .
+      '</p></div>',
     );
   }
   if (variable_get('commerce_giftwrap_show_message', '1')) {

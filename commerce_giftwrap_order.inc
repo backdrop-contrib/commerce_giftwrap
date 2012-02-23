@@ -4,19 +4,17 @@
  * Contains all code for the gift wrap local tasks on the order page.
  * Called from commerce_payment_ui_menu().
  */
-
 /**
  * Builds the content for the gift wrap local task on the order page.
- * 
+ *
  * @param object $order
  *   The order to show gift wrapping information on.
- * 
+ *
  * @return array
  *   An Drupal render array of content for the gidt wrap local task.
  */
 function commerce_giftwrap_order_tab($order) {
   $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
-
   foreach ($order_wrapper->commerce_line_items as $line_item) {
     // If this line item is a giftwrap line item...
     if ($line_item->type->value() == 'giftwrap') {

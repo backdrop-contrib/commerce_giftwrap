@@ -6,7 +6,6 @@
  * can set a price for gift wrapping and add some additional information about
  * the service.
  */
- 
 /**
  * Implements hook_help().
  */
@@ -19,13 +18,11 @@ function commerce_giftwrap_help($path, $arg) {
         Store > Configuration > Checkout Settings.');
   }
 }
-
 /**
  * Implements hook_menu().
  */
 function commerce_giftwrap_menu() {
   $items = array();
-
   // Giftwrap tab on orders.
   $items['admin/commerce/orders/%commerce_order/giftwrap'] = array(
     'title' => 'Gift Wrapping',
@@ -40,7 +37,6 @@ function commerce_giftwrap_menu() {
   );
   return $items;
 }
-
 /**
  * Implements hook_enable().
  */
@@ -59,7 +55,6 @@ function commerce_giftwrap_configure_line_item() {
     'type' => 'text',
   );
   field_create_field($field);
-  
   // Add the field to the Giftwrap Line Item.
   $instance = array(
     'field_name' => 'commerce_giftwrap_message',
@@ -74,7 +69,6 @@ function commerce_giftwrap_configure_line_item() {
   );
   field_create_instance($instance);
 }
-
 /**
  * Implements hook_commerce_checkout_pane_info().
  */
@@ -88,7 +82,6 @@ function commerce_giftwrap_commerce_checkout_pane_info() {
   );
   return $panes;
 }
-
 /**
  * Implements hook_commerce_price_component_type_info().
  */
@@ -100,7 +93,6 @@ function commerce_giftwrap_commerce_price_component_type_info() {
     ),
   );
 }
-
 /**
  * Deletes all giftwrap line items on an order.
  *
@@ -109,7 +101,6 @@ function commerce_giftwrap_commerce_price_component_type_info() {
  */
 function commerce_giftwrap_delete_giftwrap_line_items($order) {
   $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
-
   foreach ($order_wrapper->commerce_line_items as $delta => $line_item_wrapper) {
     // If this line item is a giftwrap line item...
     if ($line_item_wrapper->type->value() == 'giftwrap') {
@@ -119,7 +110,6 @@ function commerce_giftwrap_delete_giftwrap_line_items($order) {
       $order_wrapper->commerce_line_items->offsetUnset($delta);
     }
   }
-
   // If we found any giftwrap line items...
   if (!empty($line_item_id)) {
     // First save the order to update the line item reference field value.
@@ -128,19 +118,17 @@ function commerce_giftwrap_delete_giftwrap_line_items($order) {
     commerce_line_item_delete($line_item_id);
   }
 }
-
 /**
  * Checks if an order contains a giftwrap line item.
  *
  * @param object $order
  *   The order object to check for a giftwrap line item.
- * 
+ *
  * @return bool
  *   TRUE if the order contains a giftwrap line item.
  */
 function commerce_giftwrap_line_item_exists($order) {
   $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
-  
   foreach ($order_wrapper->commerce_line_items as $line_item_wrapper) {
     // If this line item is a giftwrap line item...
     if ($line_item_wrapper->type->value() == 'giftwrap') {

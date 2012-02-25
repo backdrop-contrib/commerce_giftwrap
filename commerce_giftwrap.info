@@ -1,6 +1,5 @@
 name = Commerce Gift Wrap
-description = Provides a checkout pane and line item type to apply gift wrapping
-to an order.
+description = Provides a checkout pane to allow customers to add gift wrapping.
 package = Commerce (contrib)
 dependencies[] = commerce_checkout
 dependencies[] = commerce_line_item

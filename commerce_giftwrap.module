@@ -39,6 +39,23 @@ function commerce_giftwrap_menu() {
   return $items;
 }
 /**
+ * Implements hook_commerce_line_item_type_info().
+ */
+function commerce_giftwrap_commerce_line_item_type_info() {
+  return array(
+    'giftwrap' => array(
+      'type' => 'giftwrap',
+      'name' => t('Gift Wrap'),
+      'description' => t('Line item for gift wrapping.'),
+      'add_form_submit_value' => t('Add Gift Wrapping'),
+      'base' => 'ommerce_giftwrap_line_item',
+      'callbacks' => array(
+        'configuration' => 'commerce_giftwrap_configure_line_item',
+      ),
+    ),
+  );
+}
+/**
  * Implements hook_enable().
  */
 function commerce_giftwrap_enable() {

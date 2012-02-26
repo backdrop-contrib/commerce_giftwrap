@@ -43,7 +43,7 @@ function commerce_giftwrap_pane_settings_form($checkout_pane) {
 /**
  * Implements base_checkout_form()
  */
-function commerce_giftwrap_pane_checkout_form($form, $form_state, $checkout_pane, $order) {
+function commerce_giftwrap_pane_checkout_form($form, &$form_state, $checkout_pane, $order) {
   // Set $default_value
   if (commerce_giftwrap_line_item_exists($order)) {
     $default_value = 1;
@@ -130,12 +130,13 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
 /**
  * Implements base_review()
  */
-function commerce_giftwrap_pane_review($form, $form_state, $checkout_pane, $order) {
+function commerce_giftwrap_pane_review($form, &$form_state, $checkout_pane, $order) {
   $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
   foreach ($order_wrapper->commerce_line_items as $line_item) {
     // If this line item is a giftwrap line item...
     if ($line_item->type->value() == 'giftwrap') {
       $message = $line_item->commerce_giftwrap_message->value();
+      break;
     }
   }
   if (commerce_giftwrap_line_item_exists($order)) {

@@ -119,6 +119,7 @@ function commerce_giftwrap_commerce_price_component_type_info() {
  */
 function commerce_giftwrap_delete_giftwrap_line_items($order) {
   $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
+  $line_item_id = NULL;
   foreach ($order_wrapper->commerce_line_items as $delta => $line_item_wrapper) {
     // If this line item is a giftwrap line item...
     if ($line_item_wrapper->type->value() == 'giftwrap') {
@@ -126,6 +127,7 @@ function commerce_giftwrap_delete_giftwrap_line_items($order) {
       // item reference field.
       $line_item_id = $line_item_wrapper->line_item_id->value();
       $order_wrapper->commerce_line_items->offsetUnset($delta);
+      break;
     }
   }
   // If we found any giftwrap line items...

@@ -20,6 +20,7 @@ function commerce_giftwrap_order_tab($order) {
     // If this line item is a giftwrap line item...
     if ($line_item->type->value() == 'giftwrap') {
       $message = $line_item->commerce_giftwrap_message->value();
+      break;
     }
   }
   $output = array(

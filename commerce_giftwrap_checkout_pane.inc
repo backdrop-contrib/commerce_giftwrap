@@ -48,7 +48,7 @@ function commerce_giftwrap_pane_settings_form($checkout_pane) {
   );
   return $form;
 }
-/*
+/**
  * Custom submit function to handle the commerce_giftwrap_price.
  */
 function commerce_giftwrap_pane_settings_form_submit($form, &$form_state) {

@@ -151,7 +151,7 @@ function commerce_giftwrap_pane_review($form, &$form_state, $checkout_pane, $ord
       ),
       'giftwrap_message' => array(
         '#type' => 'markup',
-        '#markup' => '<p>' . $message . '</p>',
+        '#markup' => '<p>' . check_plain($message) . '</p>',
       ),
     );
   }

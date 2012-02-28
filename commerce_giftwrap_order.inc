@@ -30,7 +30,7 @@ function commerce_giftwrap_order_tab($order) {
     ),
     'giftwrap_message' => array(
       '#type' => 'markup',
-      '#markup' => '<p>' . $message . '</p>',
+      '#markup' => '<p>' . check_plain($message) . '</p>',
     ),
   );
   return $output;

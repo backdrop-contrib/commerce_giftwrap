@@ -9,18 +9,26 @@
  * Implements base_settings_form()
  */
 function commerce_giftwrap_pane_settings_form($checkout_pane) {
+  // Load the default currency for this instance.
+  $default_currency = commerce_default_currency();
+  $currency = commerce_currency_load($default_currency);
+  // Round the default value.
+  $default_amount = commerce_currency_amount_to_decimal(
+      variable_get('commerce_giftwrap_price', '200'),
+      $currency['code']
+  );
   $form = array();
   $form['commerce_giftwrap_price'] = array(
     '#type' => 'textfield',
     '#title' => t('Gift Wrapping Price'),
     '#size' => 10,
-    '#default_value' => variable_get('commerce_giftwrap_price', '2.00'),
+    '#default_value' => $default_amount,
+    '#field_suffix' => $currency['code'],
   );
   $form['commerce_giftwrap_additional_info'] = array(
     '#type' => 'textarea',
     '#title' => t('Gift Wrapping Information'),
-    '#description' => t('If you add a description a link to some more information about the giftwrapping service will be
-                          displayed below the Yes/No form field.'),
+    '#description' => t('Add some more infomation about the Gift Wrapping service.'),
     '#default_value' => variable_get('commerce_giftwrap_additional_info', ''),
   );
   $form['commerce_giftwrap_show_message'] = array(
@@ -39,6 +47,19 @@ function commerce_giftwrap_pane_settings_form($checkout_pane) {
     '#default_value' => variable_get('commerce_giftwrap_limit_message', '60'),
   );
   return $form;
+}
+/*
+ * Custom submit function to handle the commerce_giftwrap_price.
+ */
+function commerce_giftwrap_pane_settings_form_submit($form, &$form_state) {
+  // Load the default currency for this instance.
+  $default_currency = commerce_default_currency();
+  $currency = commerce_currency_load($default_currency);
+  // Get the decimal price.
+  $decimal_price = $form_state['values']['commerce_giftwrap_price'];
+  // Convert decimal price to amount for storage.
+  $amount_price = commerce_currency_decimal_to_amount($decimal_price, $currency['code']);
+  variable_set('commerce_giftwrap_price', $amount_price);
 }
 /**
  * Implements base_checkout_form()

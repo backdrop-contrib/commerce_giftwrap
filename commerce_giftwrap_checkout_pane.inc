@@ -123,7 +123,7 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
     $line_item_wrapper = entity_metadata_wrapper('commerce_line_item', $line_item);
     // Populate the $line_item_wrapper...
     $line_item_wrapper->line_item_label = 'Gift Wrapping';
-    $line_item_wrapper->commerce_giftwrap_message = $form_state['values']['commerce_giftwrap']['commerce_giftwrap_message'];
+    $line_item_wrapper->commerce_giftwrap_message = filter_xss($form_state['values']['commerce_giftwrap']['commerce_giftwrap_message'], array());
     $line_item_wrapper->quantity = 1;
     $line_item_wrapper->commerce_unit_price->amount = variable_get('commerce_giftwrap_price', '200');
     $line_item_wrapper->commerce_unit_price->currency_code = $default_currency_code;
@@ -172,7 +172,7 @@ function commerce_giftwrap_pane_review($form, &$form_state, $checkout_pane, $ord
       ),
       'giftwrap_message' => array(
         '#type' => 'markup',
-        '#markup' => '<p>' . check_plain($message) . '</p>',
+        '#markup' => '<p>' . $message . '</p>',
       ),
     );
   }

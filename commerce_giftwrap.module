@@ -162,3 +162,23 @@ function commerce_giftwrap_line_item_exists($order) {
     }
   }
 }
+/**
+ * Gets the giftwrap message for a specific order.
+ *
+ * @param object $order
+ *   The order object to get the message of.
+ *
+ * @return string
+ *   The giftwrap message relating to this order.
+ */
+function commerce_giftwrap_get_message($order) {
+  $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
+  foreach ($order_wrapper->commerce_line_items as $line_item) {
+    // If this line item is a giftwrap line item...
+    if ($line_item->type->value() == 'giftwrap') {
+      $message = $line_item->commerce_giftwrap_message->value();
+      break;
+    }
+  }
+  return $message;
+}

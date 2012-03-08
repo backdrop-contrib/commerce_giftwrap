@@ -12,17 +12,10 @@
  *   The order to show gift wrapping information on.
  *
  * @return array
- *   An Drupal render array of content for the gidt wrap local task.
+ *   An Drupal render array of content for the gift wrap local task.
  */
 function commerce_giftwrap_order_tab($order) {
-  $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
-  foreach ($order_wrapper->commerce_line_items as $line_item) {
-    // If this line item is a giftwrap line item...
-    if ($line_item->type->value() == 'giftwrap') {
-      $message = $line_item->commerce_giftwrap_message->value();
-      break;
-    }
-  }
+  $message = commerce_giftwrap_get_message($order);
   $output = array(
     'title' => array(
       '#type' => 'markup',

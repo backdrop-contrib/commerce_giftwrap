@@ -190,6 +190,7 @@ function commerce_giftwrap_get_line_item_id($order) {
  *   The giftwrap message relating to this order.
  */
 function commerce_giftwrap_get_message($order) {
+  $message = NULL;
   $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
   foreach ($order_wrapper->commerce_line_items as $line_item) {
     // If this line item is a giftwrap line item...

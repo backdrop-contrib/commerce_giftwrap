@@ -56,36 +56,37 @@ function commerce_giftwrap_commerce_line_item_type_info() {
   );
 }
 /**
- * Implements hook_enable().
- */
-function commerce_giftwrap_enable() {
-  commerce_product_line_item_configuration('giftwrap');
-}
-/**
  * This function is called by the line item module when it is enabled or this
  * module is enabled. It invokes this function using the configuration_callback
- * as specified above.
+ * as specified in the .install file.
  */
 function commerce_giftwrap_configure_line_item() {
-  // Create the message field.
-  $field = array(
-    'field_name' => 'commerce_giftwrap_message',
-    'type' => 'text',
-  );
-  field_create_field($field);
-  // Add the field to the Giftwrap Line Item.
-  $instance = array(
-    'field_name' => 'commerce_giftwrap_message',
-    'entity_type' => 'commerce_line_item',
-    'bundle' => 'giftwrap',
-    'label' => t('Giftwrap Message'),
-    'description' => t('The Giftwrap Message'),
-    'widget' => array(
-      'type' => 'text_textfield',
-      'weight' => 10,
-    ),
-  );
-  field_create_instance($instance);
+  // Look for or add the specified field to the requested entity bundle.
+  $field = field_info_field('commerce_giftwrap_message');
+  $instance = field_info_instance('commerce_line_item', 'commerce_giftwrap_message', 'giftwrap');
+  if(empty($field)) {
+    // Create the message field.
+    $field = array(
+      'field_name' => 'commerce_giftwrap_message',
+      'type' => 'text',
+    );
+    field_create_field($field);
+  }
+  if(empty($instance)) {
+    // Add the field to the Giftwrap Line Item.
+    $instance = array(
+      'field_name' => 'commerce_giftwrap_message',
+      'entity_type' => 'commerce_line_item',
+      'bundle' => 'giftwrap',
+      'label' => t('Giftwrap Message'),
+      'description' => t('The Giftwrap Message'),
+      'widget' => array(
+        'type' => 'text_textfield',
+        'weight' => 10,
+      ),
+    );
+    field_create_instance($instance);
+  }
 }
 /**
  * Implements hook_commerce_checkout_pane_info().

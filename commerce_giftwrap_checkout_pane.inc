@@ -136,7 +136,7 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
       $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
       $line_item_wrapper = entity_metadata_wrapper('commerce_line_item', $line_item);
       // Populate the $line_item_wrapper...
-      $line_item_wrapper->line_item_label = 'Gift Wrapping';
+      $line_item_wrapper->line_item_label = t('Gift Wrapping');
       $line_item_wrapper->commerce_giftwrap_message = $giftwrap_message;
       $line_item_wrapper->quantity = 1;
       $line_item_wrapper->commerce_unit_price->amount = variable_get('commerce_giftwrap_price', '200');
@@ -172,11 +172,11 @@ function commerce_giftwrap_pane_review($form, &$form_state, $checkout_pane, $ord
     $output = array(
       'giftwrap_decision' => array(
         '#type' => 'markup',
-        '#markup' => '<h3>Would you like your order gift wrapped? <strong>Yes</strong></h3>',
+        '#markup' => '<h3>' . t('Would you like your order gift wrapped?') .' <strong>' . t('Yes') . '</strong></h3>',
       ),
       'title' => array(
         '#type' => 'markup',
-        '#markup' => '<h3>Message:</h3>',
+        '#markup' => '<h3>' . t('Message:') . '</h3>',
       ),
       'giftwrap_message' => array(
         '#type' => 'markup',
@@ -187,7 +187,7 @@ function commerce_giftwrap_pane_review($form, &$form_state, $checkout_pane, $ord
   else {
     $output['giftwrap_decision'] = array(
       '#type' => 'markup',
-      '#markup' => '<h3>Would you like your order gift wrapped? <strong>No</strong></h3>',
+      '#markup' => '<h3>' . t('Would you like your order gift wrapped?') . '<strong>' . t('No') . '</strong></h3>',
     );
   }
   return drupal_render($output);

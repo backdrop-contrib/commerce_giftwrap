@@ -48,6 +48,7 @@ function commerce_giftwrap_pane_settings_form($checkout_pane) {
   );
   return $form;
 }
+
 /**
  * Custom submit function to handle the commerce_giftwrap_price.
  */
@@ -61,6 +62,7 @@ function commerce_giftwrap_pane_settings_form_submit($form, &$form_state) {
   $amount_price = commerce_currency_decimal_to_amount($decimal_price, $currency['code']);
   variable_set('commerce_giftwrap_price', $amount_price);
 }
+
 /**
  * Implements base_checkout_form()
  */
@@ -107,6 +109,7 @@ function commerce_giftwrap_pane_checkout_form($form, &$form_state, $checkout_pan
   }
   return $checkout_form;
 }
+
 /**
  * Implements base_checkout_form_submit()
  */
@@ -163,6 +166,7 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
     commerce_giftwrap_delete_giftwrap_line_items($order);
   }
 }
+
 /**
  * Implements base_review()
  */

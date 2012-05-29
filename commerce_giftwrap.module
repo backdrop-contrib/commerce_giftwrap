@@ -59,9 +59,7 @@ function commerce_giftwrap_commerce_line_item_type_info() {
 }
 
 /**
- * This function is called by the line item module when it is enabled or this
- * module is enabled. It invokes this function using the configuration_callback
- * as specified in the .install file.
+ * Function called by the line item module when it or this module is enabled.
  */
 function commerce_giftwrap_configure_line_item() {
   // Look for or add the specified field to the requested entity bundle.

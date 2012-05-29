@@ -1,7 +1,9 @@
 <?php
 /**
  * @file
- * Provides hooks for installation and uninstallation for the Commerce Giftwrap module.
+ * Provides hooks for installation and uninstallation for the Commerce Giftwrap
+ * module.
+ * 
  */
 /**
  * Implements hook_enable().

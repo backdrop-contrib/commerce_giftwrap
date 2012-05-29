@@ -6,7 +6,7 @@
  */
 
 /**
- * Implements base_settings_form()
+ * Implements base_settings_form().
  */
 function commerce_giftwrap_pane_settings_form($checkout_pane) {
   // Load the default currency for this instance.
@@ -64,7 +64,7 @@ function commerce_giftwrap_pane_settings_form_submit($form, &$form_state) {
 }
 
 /**
- * Implements base_checkout_form()
+ * Implements base_checkout_form().
  */
 function commerce_giftwrap_pane_checkout_form($form, &$form_state, $checkout_pane, $order) {
   // Set $default_value
@@ -88,7 +88,7 @@ function commerce_giftwrap_pane_checkout_form($form, &$form_state, $checkout_pan
   if (variable_get('commerce_giftwrap_additional_info', '') != '') {
     $checkout_form['commerce_giftwrap_additional_info'] = array(
       '#markup' => '<div class="giftwrap-additonal-info"><p>'
-      . variable_get('commerce_giftwrap_additional_info', '') .
+      . filter_xss(variable_get('commerce_giftwrap_additional_info', '')) .
       '</p></div>',
     );
   }
@@ -111,7 +111,7 @@ function commerce_giftwrap_pane_checkout_form($form, &$form_state, $checkout_pan
 }
 
 /**
- * Implements base_checkout_form_submit()
+ * Implements base_checkout_form_submit().
  */
 function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $checkout_pane, $order) {
   $giftwrap_line_item_exists = commerce_giftwrap_line_item_exists($order);
@@ -119,14 +119,14 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
   $giftwrap_message = filter_xss($form_state['values']['commerce_giftwrap']['commerce_giftwrap_message'], array());
   if ($giftwrap_decision) {
     if ($giftwrap_line_item_exists && $giftwrap_message != commerce_giftwrap_get_message($order)) {
-      // If there's a giftwrap line item and the message has been changed, update the line item.
+      // Update the line item if message has been changed.
       $line_item_id = commerce_giftwrap_get_line_item_id($order);
       $line_item = commerce_line_item_load($line_item_id);
       $line_item_wrapper = entity_metadata_wrapper('commerce_line_item', $line_item);
       $line_item_wrapper->commerce_giftwrap_message = $giftwrap_message;
       // Save the line item..
       commerce_line_item_save($line_item);
-    } 
+    }
     elseif (!$giftwrap_line_item_exists) {
       // Set the currency code.
       $default_currency_code = commerce_default_currency();
@@ -168,7 +168,7 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
 }
 
 /**
- * Implements base_review()
+ * Implements base_review().
  */
 function commerce_giftwrap_pane_review($form, &$form_state, $checkout_pane, $order) {
   $message = commerce_giftwrap_get_message($order);
@@ -176,7 +176,7 @@ function commerce_giftwrap_pane_review($form, &$form_state, $checkout_pane, $ord
     $output = array(
       'giftwrap_decision' => array(
         '#type' => 'markup',
-        '#markup' => '<h3>' . t('Would you like your order gift wrapped?') .' <strong>' . t('Yes') . '</strong></h3>',
+        '#markup' => '<h3>' . t('Would you like your order gift wrapped?') . ' <strong>' . t('Yes') . '</strong></h3>',
       ),
       'title' => array(
         '#type' => 'markup',
@@ -184,7 +184,7 @@ function commerce_giftwrap_pane_review($form, &$form_state, $checkout_pane, $ord
       ),
       'giftwrap_message' => array(
         '#type' => 'markup',
-        '#markup' => '<p>' . $message . '</p>',
+        '#markup' => '<p>' . filter_xss($message) . '</p>',
       ),
     );
   }

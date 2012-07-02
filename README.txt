@@ -11,7 +11,7 @@ the recipient. Store owners have access to the following settings:
 Installation
 ------------
 Copy the commerce_giftwrap folder to your module directory and then enable in
-the admin/modules page. Settings for the Gift Wrap checkout pain can be found at
+the admin/modules page. Settings for the Gift Wrap checkout pane can be found at
 Store > Configuration > Checkout Settings.
 
 Author

@@ -152,6 +152,8 @@ function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $check
         TRUE,
         FALSE
       );
+      // Invoke the 'commerce_giftwrap_calculate' event.
+      rules_invoke_all('commerce_giftwrap_calculate', $line_item);
       // Save the incoming line item now so we get its ID.
       commerce_line_item_save($line_item);
       // Add it to the order's line item reference value.

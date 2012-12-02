@@ -116,7 +116,8 @@ function commerce_giftwrap_pane_checkout_form($form, &$form_state, $checkout_pan
 function commerce_giftwrap_pane_checkout_form_submit($form, &$form_state, $checkout_pane, $order) {
   $giftwrap_line_item_exists = commerce_giftwrap_line_item_exists($order);
   $giftwrap_decision = $form_state['values']['commerce_giftwrap']['commerce_giftwrap_decision'];
-  $giftwrap_message = filter_xss($form_state['values']['commerce_giftwrap']['commerce_giftwrap_message'], array());
+  $giftwrap_message = isset($form_state['values']['commerce_giftwrap']['commerce_giftwrap_message']) ?
+    filter_xss($form_state['values']['commerce_giftwrap']['commerce_giftwrap_message'], array()) : NULL;
   if ($giftwrap_decision) {
     if ($giftwrap_line_item_exists && $giftwrap_message != commerce_giftwrap_get_message($order)) {
       // Update the line item if message has been changed.

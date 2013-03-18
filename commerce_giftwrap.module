@@ -50,7 +50,7 @@ function commerce_giftwrap_commerce_line_item_type_info() {
       'name' => t('Gift Wrap'),
       'description' => t('Line item for gift wrapping.'),
       'add_form_submit_value' => t('Add Gift Wrapping'),
-      'base' => 'ommerce_giftwrap_line_item',
+      'base' => 'commerce_giftwrap_line_item',
       'callbacks' => array(
         'configuration' => 'commerce_giftwrap_configure_line_item',
       ),

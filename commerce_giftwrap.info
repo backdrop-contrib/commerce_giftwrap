@@ -3,4 +3,5 @@ description = Provides a checkout pane to allow customers to add gift wrapping.
 package = Commerce (contrib)
 dependencies[] = commerce_checkout
 dependencies[] = commerce_line_item
-core = 7.x
+backdrop = 1.x
+type = module

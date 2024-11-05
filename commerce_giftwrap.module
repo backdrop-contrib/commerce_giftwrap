@@ -120,7 +120,7 @@ function commerce_giftwrap_commerce_price_component_type_info() {
  * Implements hook_form_FORM_ID_alter().
  */
 function commerce_giftwrap_form_commerce_checkout_pane_settings_form_alter(&$form, &$form_values, $form_id) {
-  if($form['checkout_pane']['#value']['base'] == 'commerce_giftwrap_pane') {
+  if ($form['checkout_pane']['#value']['base'] == 'commerce_giftwrap_pane') {
     $form['submit']['#submit'][] = 'commerce_giftwrap_pane_settings_form_submit';
   }
 }

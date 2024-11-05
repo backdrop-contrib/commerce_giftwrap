@@ -1,0 +1,7 @@
+{
+    "_config_name": "commerce_giftwrap.settings",
+    "commerce_giftwrap_price": "200",
+    "commerce_giftwrap_additional_info": "",
+    "commerce_giftwrap_show_message": "1",
+    "commerce_giftwrap_limit_message": "60"
+}

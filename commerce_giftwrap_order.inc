@@ -12,7 +12,7 @@
  *   The order to show gift wrapping information on.
  *
  * @return array
- *   An Drupal render array of content for the gift wrap local task.
+ *   An Backdrop render array of content for the gift wrap local task.
  */
 function commerce_giftwrap_order_tab($order) {
   $message = commerce_giftwrap_get_message($order);
